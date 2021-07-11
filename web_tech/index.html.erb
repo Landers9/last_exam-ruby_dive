@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>Welcome to the page of last ruby exam</h1>
+    <% require 'pg' %>
+    <% connection = PG::connect(dbname: "goya") %>
+    <% connection.internal_encoding = "UTF-8" %>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+    <% result = connection.exec("select weight, give_for from crops;") %>
+    <% data = [] %>
+    <% result.each do |record| %>
+      <%  data << "The size of bitter gourd：#{record["weight"]}　Who sold：#{record["give_for"]}" %>
+    <% end %>
+
+    <form action="goya.cgi" method="POST">
+      Press button "Send" to display a page with goya informations of poor quality
+        <br><br>
+       <!-- Substitute the data you want to send for value -->
+       <!-- Use name = "goya" as a marker for information -->
+      <input type="text" name="goya" value="<%= data.join(' ') %>">
+      <input type="submit" name="Send">
+    </form>
+  </body>
+</html>

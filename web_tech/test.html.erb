@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>test! !! !! !! !! !! !! !! !! !! !! !! !!</h1>
+    <% require 'pg' %>
+    <% connection = PG::connect(dbname: "goya") %>
+    <% connection.internal_encoding = "UTF-8" %>
+
+    <form action="indicate.cgi" method="POST">
+       Please enter the characters below<br><br>
+      <input type="text"  name="input" ><br>
+      <input type="submit" name="Send" >
+    </form>
+
+    <% result = connection.exec("select weight, give_for from crops;") %>
+    <% data = [] %>
+    <% result.each do |record| %>
+      <%  data << "The size of bitter gourd：#{record["weight"]}　Who sold：#{record["give_for"]}" %>
+    <% end %>
+
+    <form action="goya.cgi" method="POST">
+       Press the button below to jump to the information page of the size of bitter gourd and the person who sold it.<br><br>
+       <!-- Substitute the data you want to send for value -->
+       <!-- Use name = "goya" as a marker for information -->
+      <input type="text" name="goya" value="<%= data.join(' ') %>">
+      <input type="submit" name="Send">
+    </form>
+  </body>
+</html>
