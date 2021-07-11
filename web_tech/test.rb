@@ -15,4 +15,7 @@ server.mount('/test', WEBrick::HTTPServlet::ERBHandler, 'test.html.erb')
 server.mount('/indicate.cgi', WEBrick::HTTPServlet::CGIHandler, 'indicate.rb')
 # Add this line
 server.mount('/goya.cgi', WEBrick::HTTPServlet::CGIHandler, 'goya.rb')
+
+server.mount('/giveFor.cgi', WEBrick::HTTPServlet::CGIHandler, 'giveFor.rb')
+
 server.start

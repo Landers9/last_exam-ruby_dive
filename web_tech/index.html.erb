@@ -4,6 +4,7 @@
   </head>
   <body>
     <h1>Welcome to the page of last ruby exam</h1>
+
     <% require 'pg' %>
     <% connection = PG::connect(dbname: "goya") %>
     <% connection.internal_encoding = "UTF-8" %>
@@ -14,6 +15,14 @@
     <% data = [] %>
     <% result.each do |record| %>
       <%  data << "The size of bitter gourd：#{record["weight"]}　Who sold：#{record["give_for"]}" %>
+
+    <% end %>
+
+    <% result_giveFor = connection.exec("select * from crops where give_for != 'self-consumption';") %>
+    <% data_giveFor = [] %>
+    <% result_giveFor.each do |record_giveFor| %>
+    <%  data_giveFor << "length：#{record_giveFor["length"]}　weight：#{record_giveFor["weight"]} quality : #{record_giveFor["quality"]} give_for : #{record_giveFor["give_for"]} date : #{record_giveFor["data"]}" %>
+
     <% end %>
 
     <form action="goya.cgi" method="POST">
@@ -24,5 +33,15 @@
       <input type="text" name="goya" value="<%= data.join(' ') %>">
       <input type="submit" name="Send">
     </form>
+
+    <form action="giveFor.cgi" method="POST">
+      Press button "Send" to display a page with goya informations where give_for is not self-consumption
+        <br><br>
+       <!-- Substitute the data you want to send for value -->
+       <!-- Use name = "give_for" as a marker for information -->
+      <input type="text" name="giveFor" value="<%= data_giveFor.join(' ') %>">
+      <input type="submit" name="Send">
+    </form>
+
   </body>
 </html>
